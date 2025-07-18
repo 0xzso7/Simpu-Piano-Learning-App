@@ -2,7 +2,7 @@
 
 # Simpu - Your Penguin Piano Guide
 
-<img src="https://github.com/vidoodles/simpu-piano-lessons/assets/23020159/0f3ddeaf-14c7-4d7f-9176-ac0f84cb7621" alt="Simpu Logo" width="200"/>
+<img src="https://github.com/0xzso7/simpu-piano-lessons/assets/23020159/0f3ddeaf-14c7-4d7f-9176-ac0f84cb7621" alt="Simpu Logo" width="200"/>
 
 Welcome to **Simpu**, your friendly penguin guide to practicing and mastering the piano keyboard! Whether you're a beginner or a seasoned player, Simpu is here to help you improve your piano skills through interactive exercises and fun challenges.
 
@@ -34,7 +34,7 @@ Follow these instructions to get a copy of Simpu up and running on your local ma
 
 1. Clone the repository:
     ```sh
-    git clone https://github.com/vidoodles/simpu-piano-lessons.git
+    git clone https://github.com/0xzso7/Simpu-Piano-Learning-App.git
     ```
 2. Navigate to the project directory:
     ```sh
