@@ -38,7 +38,7 @@ Follow these instructions to get a copy of Simpu up and running on your local ma
     ```
 2. Navigate to the project directory:
     ```sh
-    cd simpu
+    cd Simpu-Piano-Learning-App
     ```
 3. Install the dependencies:
     ```sh
