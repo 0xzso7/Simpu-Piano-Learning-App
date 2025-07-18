@@ -2,7 +2,7 @@
 
 # Simpu - Your Penguin Piano Guide
 
-<[img src="https://github.com/0xzso7/Simpu-Piano-Learning-App/assets/23020159/0f3ddeaf-14c7-4d7f-9176-ac0f84cb7621"](https://github.com/0xzso7/Simpu-Piano-Learning-App/issues/1#issue-3241506473) alt="Simpu Logo" width="200"/>
+<img width="200" alt="Image" src="https://github.com/user-attachments/assets/09ed45dd-63f2-4d90-a134-64ccffba431b" />
 
 Welcome to **Simpu**, your friendly penguin guide to practicing and mastering the piano keyboard! Whether you're a beginner or a seasoned player, Simpu is here to help you improve your piano skills through interactive exercises and fun challenges.
 
