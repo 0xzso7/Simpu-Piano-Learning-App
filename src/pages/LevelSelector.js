@@ -1,94 +1,51 @@
 import { useState, useEffect } from "react";
-import { useSelector } from 'react-redux';
-import firebase from '../utils/FirebaseConfig';
-import logger from "../utils/logger";
-import FloatingText from "../components/FloatingText";
 import { useNavigate } from 'react-router-dom';
-import Confetti from "../components/Confetti";
+import FloatingText from "../components/FloatingText";
 import UserProfile from "../components/UserProfile";
 
-const LevelSelector = () => {
-  const user = useSelector(state => state.user);
-  const storedUser = localStorage.getItem('user');
-  const [loggedInUser, setLoggedInUser] = useState(null);
-  const [selectedLevel, setSelectedLevel] = useState(null);
-  const [tutorialData, setTutorialData] = useState({});
-  const [allDone, setAllDone] = useState(false);
+const mockUser = {
+  user: "test_user_id",
+  name: "0xzso7",
+  email: "test@example.com",
+  photo: "",
+  piano_expertise: ""
+};
 
+const LevelSelector = () => {
+  const [loggedInUser, setLoggedInUser] = useState(null);
+  const [allDone, setAllDone] = useState(true); // ← Set this to true to enable all buttons
   const navigate = useNavigate();
 
   useEffect(() => {
-    if (storedUser) {
-      const userData = JSON.parse(storedUser);
-      setLoggedInUser(userData);
-      const fetchTutorialData = async () => {
-        try {
-          const userRef = firebase.firestore().collection('users').doc(userData.user);
-          const userDoc = await userRef.get();
-          if (userDoc.exists) {
-            const tutorial = userDoc.data().tutorial;
-            if (!tutorial) {
-              // If tutorial does not exist, create it
-              const initialTutorialData = {
-                c: "",
-                d: "",
-                e: "",
-                f: "",
-                g: "",
-                a: "",
-                b: "",
-              };
-              await userRef.set({ tutorial: initialTutorialData }, { merge: true });
-              setTutorialData(initialTutorialData);
-              checkAllDone(initialTutorialData);
-            } else {
-              // If tutorial exists, use it
-              setTutorialData(tutorial);
-              checkAllDone(tutorial);
-            }
-          }
-        } catch (error) {
-          console.error("Error fetching tutorial data: ", error);
-        }
-      };
-      fetchTutorialData();
-    }
-  }, [storedUser]);
+    // Set mock user
+    setLoggedInUser(mockUser);
 
-  const checkAllDone = (tutorial) => {
-    const allFieldsDone = Object.values(tutorial).every((value) => value === "done");
+    // If you still want a condition for enabling buttons, simulate tutorial check
+    const fakeTutorialData = {
+      c: "done", d: "done", e: "done", f: "done", g: "done", a: "done", b: "done",
+    };
+
+    const allFieldsDone = Object.values(fakeTutorialData).every(val => val === "done");
     setAllDone(allFieldsDone);
-  };
+  }, []);
 
   const handleLevelSelect = (level) => {
-    if (loggedInUser) {
-      firebase.firestore().collection('users').doc(loggedInUser.user).update({
-        piano_expertise: level
-      }).then(() => {
-        logger(`Selected level ${level} saved to Firebase.`);
-        const lvl = level.toLowerCase();
-        const navigator = "/app/" + lvl;
-        navigate(navigator);
-      }).catch((error) => {
-        logger(error, 'error');
-      });
-    }
+    const lvl = level.toLowerCase();
+    navigate(`/app/${lvl}`);
   };
 
-  if (!loggedInUser) {
-    return null;
-  }
+  if (!loggedInUser) return null;
 
   return (
-    <div className="min-h-screen flex flex-col justify-between items-center">
+    <div className="flex flex-col items-center justify-between min-h-screen">
          <UserProfile user={loggedInUser} />
       <div className="flex items-center justify-center w-full">
-        <div className="bg-white p-6 rounded-lg max-w-3xl">
+        <div className="max-w-3xl p-6 bg-white rounded-lg">
           <div className="p-6 space-y-4 md:space-y-6 sm:p-8">
             <div className="flex flex-col items-center">
               <FloatingText username={loggedInUser.name}></FloatingText>
-              <img className="w-45 h-40" src="/simpu.png" alt="logo" />
-              <p className="text-lg text-gray-500 mt-4">Tell me what your expertise in using the piano</p>
+              <img className="h-40 w-45" src="/simpu.png" alt="logo" />
+              <p className="mt-4 text-lg text-gray-500">Tell me what your expertise in using the piano</p>
             </div>
             <div className="flex justify-center space-x-4">
               <a className="big-button" onClick={() => handleLevelSelect('NOVICE')}>Novice</a>

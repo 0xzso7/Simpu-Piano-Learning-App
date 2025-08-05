@@ -3,7 +3,7 @@ import { useSelector } from "react-redux";
 import { useLocation, useNavigate  } from "react-router-dom";
 import { Howl } from "howler";
 import { Modal, Button } from 'flowbite-react';
-import firebase from '../utils/FirebaseConfig';
+// import firebase from '../utils/FirebaseConfig';
 import NoteDetector from "../utils/DetectorClass";
 import { hzToNoteString } from '../utils/NoteDetector';
 import Confetti from '../components/Confetti';
@@ -323,19 +323,19 @@ const Assessment = () => {
   }
 
   return (
-    <div className="min-h-screen flex flex-col justify-between items-center p-4">
+    <div className="flex flex-col items-center justify-between min-h-screen p-4">
       {/* Progress bar */}
-      <div className="flex justify-center my-4 w-full">
+      <div className="flex justify-center w-full my-4">
         <div className="w-full max-w-3xl">
           <div className="relative pt-1">
-            <div className="flex mb-2 items-center justify-between">
+            <div className="flex items-center justify-between mb-2">
               <div>
-                <span className="text-xs font-semibold inline-block py-1 px-2 uppercase rounded-full text-green-600 bg-green-200">
+                <span className="inline-block px-2 py-1 text-xs font-semibold text-green-600 uppercase bg-green-200 rounded-full">
                   Progress
                 </span>
               </div>
               <div className="text-right">
-                <span className="text-xs font-semibold inline-block text-green-600">
+                <span className="inline-block text-xs font-semibold text-green-600">
                   {progress}%
                 </span>
               </div>
@@ -363,11 +363,11 @@ const Assessment = () => {
 
       {/* Quiz section */}
       <div className="flex flex-col items-center justify-center flex-grow w-full">
-        <div className="bg-white p-2 w-full max-w-3xl">
-          <h2 className="text-xl font-semibold mb-4">Let's Practice! </h2>
+        <div className="w-full max-w-3xl p-2 bg-white">
+          <h2 className="mb-4 text-xl font-semibold">Let's Practice! </h2>
           <div className="p-6 space-y-4 md:space-y-6 sm:p-8">
-          <p className="text-lg text-gray-500 mt-4 mb-20">
-          Welcome to the assessment! Let's put your learning to the test by playing <a className="text-bold text-5xl text-orange-500">{songName}</a> from memory.
+          <p className="mt-4 mb-20 text-lg text-gray-500">
+          Welcome to the assessment! Let's put your learning to the test by playing <a className="text-5xl text-orange-500 text-bold">{songName}</a> from memory.
 
               </p>
               <div className="space-y-4 md:space-y-6">
@@ -382,8 +382,8 @@ const Assessment = () => {
 
       {/* Confetti */}
       {progress >= 100 && 
-       <div className="flex w-full justify-center p-6 bg-green-200">
-  <div className="flex items-center justify-between w-full mt-4 px-4 bg-green-200">
+       <div className="flex justify-center w-full p-6 bg-green-200">
+  <div className="flex items-center justify-between w-full px-4 mt-4 bg-green-200">
             <div>
               <div className="image-container">
                 <img
@@ -391,7 +391,7 @@ const Assessment = () => {
                   className="image"
                 />
               </div>
-              <span className="text-lg ml-3 text-green-800 font-bold">
+              <span className="ml-3 text-lg font-bold text-green-800">
                 Completed
                 { wrongNotesCount } 
               </span>

@@ -10,7 +10,7 @@
     "@uidotdev/usehooks": "^2.4.1",
     "abcjs": "^6.4.1",
     "classnames": "^2.5.1",
-    "firebase": "^10.12.2",
+    "firebase": "^10.14.1",
     "flowbite-react": "^0.10.1",
     "gsap": "^3.12.5",
     "gsap-trial": "^3.12.5",

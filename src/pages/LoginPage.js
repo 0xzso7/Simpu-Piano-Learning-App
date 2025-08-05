@@ -1,60 +1,69 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-import firebase from '../utils/FirebaseConfig';
+import { auth, db } from '../utils/FirebaseConfig';
+import { GoogleAuthProvider, onAuthStateChanged, signInWithPopup } from 'firebase/auth';
+import { doc, getDoc, setDoc } from 'firebase/firestore';
 import { useDispatch } from 'react-redux';
 import logger from '../utils/logger';
 
 const LoginPage = () => {
-    const [user, setUser] = useState(null);
     const navigate = useNavigate();
-    const dispatch = useDispatch();
 
     useEffect(() => {
-        const unsubscribe = firebase.auth().onAuthStateChanged((user) => {
-            setUser(user);
-        });
+        navigate('/app/levelselector');
+    }, [navigate]);
 
-        return () => unsubscribe();
-    }, []);
+    return null;
 
     const handleGoogleLogin = async () => {
         try {
-            const provider = new firebase.auth.GoogleAuthProvider();
-            const result = await firebase.auth().signInWithPopup(provider);
-            const { user } = result;
+            const provider = new GoogleAuthProvider();
+            const result = await signInWithPopup(auth, provider);
+            const user = result.user;
+
             if (user) {
-                const userRef = firebase.firestore().collection('users').doc(user.uid);
-                const userDoc = await userRef.get();
+                const userRef = doc(db, 'users', user.uid);
+                const userDoc = await getDoc(userRef);
+
                 logger('Fetching firebase user');
-                if (userDoc.exists) {
+
+                if (userDoc.exists()) {
                     logger('Routing to home');
                     const userData = userDoc.data();
-                    localStorage.setItem('user', JSON.stringify({ user: user.uid, email: user.email, photo: user.photoURL, name: user.displayName, ...userData }));
-                    const expertise = userData.piano_expertise
-                    if (expertise === "") {
+                    localStorage.setItem('user', JSON.stringify({ 
+                        user: user.uid, 
+                        email: user.email, 
+                        photo: user.photoURL, 
+                        name: user.displayName, 
+                        ...userData 
+                    }));
+
+                    const expertise = userData.piano_expertise;
+                    if (!expertise) {
                         logger('User piano_expertise is empty, routing to level selector');
                         navigate('/app/levelselector');
                     } else {
-                        const lvl = expertise.toLowerCase();
-                        const navigator = "/app/" + lvl;
-                        navigate(navigator);
+                        navigate(`/app/${expertise.toLowerCase()}`);
                     }
 
                 } else {
-                    console.log('🐧 Simpu: User does not exist, creating firestore document');
+                    logger('User does not exist, creating firestore document');
                     const newUser = {
                         piano_expertise: "",
                         email: user.email,
                         photo: user.photoURL,
                         name: user.displayName
                     };
-                    await userRef.set(newUser, { merge: true });
-                    const userDoc = await userRef.get();
-                    const userData = userDoc.data()
-                    localStorage.setItem('user', JSON.stringify({ user: user.uid, email: user.email, photo: user.photoURL, name: user.displayName, ...userData }));
+                    await setDoc(userRef, newUser, { merge: true });
+                    localStorage.setItem('user', JSON.stringify({ 
+                        user: user.uid, 
+                        email: user.email, 
+                        photo: user.photoURL, 
+                        name: user.displayName, 
+                        ...newUser 
+                    }));
                     navigate('/app/levelselector');
                 }
-                
             }
         } catch (error) {
             logger(error, "error");
@@ -62,13 +71,13 @@ const LoginPage = () => {
     };
 
     return (
-        <section className="bg-gray-50 dark:bg-gray-900 min-h-screen flex items-center justify-center" id="content">
+        <section className="flex items-center justify-center min-h-screen bg-gray-50 dark:bg-gray-900" id="content">
             <div className="flex flex-col items-center justify-center px-6 py-8 mx-auto md:h-screen lg:py-0">
                 <div className="w-full bg-white rounded-lg shadow md:mt-0 sm:max-w-md xl:p-0 dark:bg-gray-800">
                     <div className="p-6 space-y-4 md:space-y-6 sm:p-8">
                         <div className="flex flex-col items-center mb-5">
-                            <img className="w-45 h-40" src="/simpu-waving.png" alt="logo" />
-                            <span className="text-lg font-birdgo text-gray-500 mt-4">
+                            <img className="h-40 w-45" src="/simpu-waving.png" alt="logo" />
+                            <span className="mt-4 text-lg text-gray-500 font-birdgo">
                                 Your guide to piano learning journey!
                             </span>
                         </div>
