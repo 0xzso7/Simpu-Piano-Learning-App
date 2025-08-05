@@ -6,6 +6,7 @@ import { doc, getDoc, setDoc } from 'firebase/firestore';
 import { useDispatch } from 'react-redux';
 import logger from '../utils/logger';
 
+// LoginPage component
 const LoginPage = () => {
     const navigate = useNavigate();
 
